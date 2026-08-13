@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uzay Market | Online Market Alışverişi</title>
+<meta name="description" content="Uzay Market ile taze meyve sebze, içecek, süt ürünleri ve daha fazlası kapınıza gelsin. Hızlı teslimat, güvenli alışveriş.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --space-deep:#0B2545;
+    --space-blue:#134074;
+    --space-blue-light:#DCEBFA;
+    --green:#2E8B57;
+    --green-dark:#1F5C3A;
+    --green-light:#EAF6EF;
+    --gold:#FFC145;
+    --cream:#FDFDFB;
+    --ink:#1C1C1A;
+    --gray:#6B6B66;
+    --border:#E3E3DD;
+    --red:#E63946;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Work Sans', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    padding-bottom:90px;
+  }
+  h1,h2,h3{font-family:'Poppins', sans-serif;}
+
+  /* Header */
+  header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:var(--space-deep);
+    padding:14px 5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .header-left{display:flex; align-items:center; gap:14px;}
+  .hamburger-btn{
+    width:40px; height:40px;
+    background:rgba(255,255,255,0.1);
+    border:none;
+    border-radius:8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .hamburger-btn span{width:18px; height:2px; background:#fff; display:block;}
+  .logo{
+    font-weight:800;
+    font-size:1.15rem;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+  }
+  .logo .accent{color:var(--gold);}
+  .header-actions{display:flex; gap:10px; align-items:center;}
+  .icon-btn{
+    width:40px; height:40px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff;
+    text-decoration:none;
+    font-size:1.05rem;
+    position:relative;
+    border:none;
+    cursor:pointer;
+  }
+  .cart-badge{
+    position:absolute;
+    top:-4px; right:-4px;
+    background:var(--red);
+    color:#fff;
+    font-size:0.65rem;
+    font-weight:700;
+    width:18px; height:18px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* Mobile menu overlay */
+  .mobile-menu{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:var(--space-deep);
+    z-index:300;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu-close{
+    position:absolute;
+    top:22px; right:6%;
+    background:rgba(255,255,255,0.1);
+    border:none;
+    color:#fff;
+    width:42px; height:42px;
+    font-size:1.5rem;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .mobile-menu-list{list-style:none; width:100%; max-width:420px; padding:0 24px;}
+  .mobile-menu-list li{border-bottom:1px solid rgba(255,255,255,0.12);}
+  .mobile-menu-list a{
+    display:block;
+    padding:20px 8px;
+    color:#fff;
+    text-decoration:none;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    text-align:center;
+  }
+  .mobile-menu-list a:hover{color:var(--gold);}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(160deg, var(--space-deep) 0%, var(--space-blue) 100%);
+    padding:44px 6% 34px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    top:-60px; right:-60px;
+    width:220px; height:220px;
+    background:radial-gradient(circle, rgba(255,193,69,0.18) 0%, transparent 70%);
+  }
+  .hero::after{
+    content:'';
+    position:absolute;
+    bottom:-80px; left:-40px;
+    width:200px; height:200px;
+    background:radial-gradient(circle, rgba(46,139,87,0.25) 0%, transparent 70%);
+  }
+  .hero h1{
+    color:#fff;
+    font-size:clamp(1.5rem,5vw,2.2rem);
+    font-weight:800;
+    margin-bottom:12px;
+    position:relative;
+    z-index:1;
+  }
+  .hero p{
+    color:#C9D8E8;
+    font-size:0.95rem;
+    font-weight:400;
+    max-width:440px;
+    margin:0 auto 26px;
+    position:relative;
+    z-index:1;
+  }
+  .trust-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:1;
+  }
+  .trust-badge{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:20px;
+    padding:9px 16px;
+    color:#fff;
+    font-size:0.75rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  /* Campaigns */
+  .campaigns-section{padding:30px 0 10px;}
+  .campaigns-head{padding:0 6%; margin-bottom:16px; display:flex; align-items:baseline; justify-content:space-between;}
+  .campaigns-head h2{font-size:1.15rem; font-weight:800; color:var(--space-deep);}
+  .campaigns-head span{font-size:0.75rem; color:var(--gray); font-weight:600;}
+  .campaigns-scroll{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding:0 6% 8px;
+    scrollbar-width:none;
+  }
+  .campaigns-scroll::-webkit-scrollbar{display:none;}
+  .campaign-card{
+    flex-shrink:0;
+    width:200px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+  }
+  .campaign-img{
+    aspect-ratio:4/3;
+    background:linear-gradient(135deg, var(--green-light) 0%, var(--space-blue-light) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--green-dark);
+    font-size:0.78rem;
+    text-align:center;
+    padding:10px;
+    border:1.5px dashed var(--green);
+    border-radius:14px 14px 0 0;
+  }
+  .campaign-badge{
+    position:absolute;
+    top:10px; left:10px;
+    background:var(--red);
+    color:#fff;
+    font-size:0.65rem;
+    font-weight:800;
+    padding:4px 10px;
+    border-radius:12px;
+    letter-spacing:0.03em;
+  }
+  .campaign-title{
+    padding:12px;
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--ink);
+  }
+
+  /* Category tabs */
+  .tabs-wrap{
+    position:sticky;
+    top:68px;
+    z-index:99;
+    background:var(--cream);
+    border-bottom:1px solid var(--border);
+    padding:14px 5%;
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    margin-top:20px;
+  }
+  .tabs-wrap::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex-shrink:0;
+    padding:10px 18px;
+    border-radius:20px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    color:var(--gray);
+    font-family:inherit;
+    font-size:0.85rem;
+    font-weight:600;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:all 0.25s;
+  }
+  .tab-btn.active{
+    background:var(--green);
+    border-color:var(--green);
+    color:#fff;
+  }
+
+  main{padding:20px 5% 20px;}
+
+  .product-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .product-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .product-img{
+    aspect-ratio:1/1;
+    background:var(--green-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--green);
+    font-size:0.72rem;
+    text-align:center;
+    padding:10px;
+    border-bottom:1px solid var(--border);
+  }
+  .product-info{padding:10px 12px 4px;}
+  .product-name{
+    font-size:0.82rem;
+    font-weight:500;
+    line-height:1.35;
+    margin-bottom:6px;
+    min-height:2.6em;
+  }
+  .product-price{
+    font-size:1rem;
+    font-weight:800;
+    color:var(--green-dark);
+  }
+  .product-add{padding:8px 12px 12px;}
+  .add-btn{
+    width:100%;
+    padding:10px;
+    background:var(--green);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    font-family:inherit;
+    font-weight:700;
+    font-size:0.8rem;
+    cursor:pointer;
+    transition:background 0.2s;
+  }
+  .add-btn:hover{background:var(--green-dark);}
+  .qty-stepper{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--green-light);
+    border-radius:8px;
+    padding:6px 10px;
+  }
+  .qty-stepper button{
+    width:28px; height:28px;
+    border-radius:6px;
+    border:none;
+    background:var(--green);
+    color:#fff;
+    font-size:1.1rem;
+    font-weight:700;
+    cursor:pointer;
+    line-height:1;
+  }
+  .qty-stepper span{font-weight:700; font-size:0.95rem;}
+
+  /* Footer */
+  footer{
+    background:var(--space-deep);
+    color:#C9D8E8;
+    padding:44px 6% 26px;
+    margin-top:20px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:28px;
+    margin-bottom:30px;
+  }
+  .footer-col h4{
+    color:#fff;
+    font-family:'Poppins', sans-serif;
+    font-size:1rem;
+    margin-bottom:14px;
+  }
+  .footer-col p, .footer-col a{
+    color:#C9D8E8;
+    text-decoration:none;
+    font-size:0.85rem;
+    display:block;
+    margin-bottom:8px;
+  }
+  .footer-col a:hover{color:var(--gold);}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.12);
+    padding-top:20px;
+    text-align:center;
+    font-size:0.75rem;
+    color:#8FA3BD;
+  }
+
+  /* Floating cart bar */
+  .cart-bar{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    background:var(--space-deep);
+    color:#fff;
+    padding:16px 5%;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    z-index:150;
+    cursor:pointer;
+  }
+  .cart-bar.show{display:flex;}
+  .cart-bar-left{font-size:0.85rem; font-weight:600;}
+  .cart-bar-total{font-size:1.05rem; font-weight:800;}
+  .cart-bar-right{
+    background:var(--gold);
+    color:var(--space-deep);
+    padding:10px 20px;
+    border-radius:20px;
+    font-weight:800;
+    font-size:0.85rem;
+  }
+
+  /* Cart panel overlay */
+  .cart-overlay{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:200;
+    display:none;
+    align-items:flex-end;
+  }
+  .cart-overlay.open{display:flex;}
+  .cart-panel{
+    background:#fff;
+    width:100%;
+    max-height:88vh;
+    border-radius:20px 20px 0 0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .cart-header{
+    padding:20px 24px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+  }
+  .cart-header h2{font-size:1.2rem; font-weight:800;}
+  .cart-close{
+    background:var(--green-light);
+    border:none;
+    width:34px; height:34px;
+    border-radius:50%;
+    font-size:1.1rem;
+    color:var(--green-dark);
+    cursor:pointer;
+  }
+  .cart-items{
+    flex:1;
+    overflow-y:auto;
+    padding:12px 24px;
+  }
+  .cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+    gap:12px;
+  }
+  .cart-item-name{font-size:0.88rem; font-weight:600; flex:1;}
+  .cart-item-price{font-size:0.8rem; color:var(--gray); margin-top:2px;}
+  .cart-item-controls{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+  }
+  .cart-item-controls button{
+    width:26px; height:26px;
+    border-radius:6px;
+    border:none;
+    background:var(--green-light);
+    color:var(--green-dark);
+    font-weight:700;
+    cursor:pointer;
+  }
+  .cart-empty{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--gray);
+  }
+  .cart-footer{
+    padding:18px 24px 24px;
+    border-top:1px solid var(--border);
+  }
+  .cart-subtotal{
+    display:flex;
+    justify-content:space-between;
+    font-size:1rem;
+    font-weight:800;
+    margin-bottom:16px;
+  }
+  .location-btn{
+    width:100%;
+    padding:13px;
+    background:var(--green-light);
+    color:var(--green-dark);
+    border:1.5px dashed var(--green);
+    border-radius:10px;
+    font-family:inherit;
+    font-weight:700;
+    font-size:0.85rem;
+    cursor:pointer;
+    margin-bottom:12px;
+  }
+  .location-status{
+    font-size:0.78rem;
+    color:var(--green-dark);
+    text-align:center;
+    margin:-6px 0 12px;
+    font-weight:600;
+  }
+  .whatsapp-btn{
+    width:100%;
+    padding:15px;
+    background:#25D366;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-family:inherit;
+    font-weight:800;
+    font-size:0.95rem;
+    cursor:pointer;
+  }
+  .whatsapp-btn:disabled{
+    background:#B8E6C4;
+    cursor:not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<header id="mainHeader">
+  <div class="header-left">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="logo">🚀 Uzay <span class="accent">Market</span></div>
+  </div>
+  <div class="header-actions">
+    <a href="tel:+905398490035" class="icon-btn" aria-label="Ara">📞</a>
+    <button class="icon-btn" onclick="openCart()" aria-label="Sepet">
+      🛒
+      <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Kapat">&times;</button>
+  <ul class="mobile-menu-list">
+    <li><a href="hakkimizda.html">Hakkımızda</a></li>
+    <li><a href="hakkimizda.html#misyon">Misyon</a></li>
+    <li><a href="hakkimizda.html#vizyon">Vizyon</a></li>
+    <li><a href="iletisim.html">İletişim</a></li>
+    <li><a href="adresimiz.html">Adresimiz</a></li>
+  </ul>
+</div>
+
+<section class="hero">
+  <h1>Uzay Market'te Alışveriş Zamanı 🚀</h1>
+  <p>Taze meyve & sebze, içecekler ve günlük ihtiyaçlarınız hızlıca kapınızda. Kolay sipariş, güvenli alışveriş.</p>
+  <div class="trust-row">
+    <div class="trust-badge">🚀 Hızlı Teslimat</div>
+    <div class="trust-badge">🥬 Taze Ürünler</div>
+    <div class="trust-badge">🔒 Güvenli Alışveriş</div>
+  </div>
+</section>
+
+<section class="campaigns-section">
+  <div class="campaigns-head">
+    <h2>Kampanyalarımız</h2>
+    <span>Bu Haftaya Özel</span>
+  </div>
+  <div class="campaigns-scroll">
+      <div class="campaign-card">
+        <div class="campaign-img">Kampanya Görseli</div>
+        <div class="campaign-badge">İNDİRİM</div>
+        <div class="campaign-title">Kampanya Başlığı 1</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-img">Kampanya Görseli</div>
+        <div class="campaign-badge">İNDİRİM</div>
+        <div class="campaign-title">Kampanya Başlığı 2</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-img">Kampanya Görseli</div>
+        <div class="campaign-badge">İNDİRİM</div>
+        <div class="campaign-title">Kampanya Başlığı 3</div>
+      </div>
+      <div class="campaign-card">
+        <div class="campaign-img">Kampanya Görseli</div>
+        <div class="campaign-badge">İNDİRİM</div>
+        <div class="campaign-title">Kampanya Başlığı 4</div>
+      </div>
+  </div>
+</section>
+
+<div class="tabs-wrap">
+  <button class="tab-btn active" data-cat="icecekler" onclick="switchCategory('icecekler')">Gazlı İçecekler & Enerji İçecekleri</button>
+      <button class="tab-btn" data-cat="meyve-sebze" onclick="switchCategory('meyve-sebze')">Meyve & Sebze</button>
+      <button class="tab-btn" data-cat="sut-urunleri" onclick="switchCategory('sut-urunleri')">Süt ve Süt Ürünleri</button>
+      <button class="tab-btn" data-cat="atistirmalik" onclick="switchCategory('atistirmalik')">Atıştırmalık & Çikolata</button>
+</div>
+
+<main>
+    <section class="category-section" id="cat-icecekler" style="display:grid;">
+      <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-0.jpg" alt="Efsane Gazoz 1.5 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Efsane Gazoz 1.5 Lt</div>
+          <div class="product-price">65,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-0">
+          <button class="add-btn" onclick="addToCart('icecekler-0', 'Efsane Gazoz 1.5 Lt', 65.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-0" style="display:none;">
+            <button onclick="changeQty('icecekler-0', -1)">−</button>
+            <span id="qty-icecekler-0">1</span>
+            <button onclick="changeQty('icecekler-0', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-1.jpg" alt="Daha Az Kalori Efsane Gazoz 1.5 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Daha Az Kalori Efsane Gazoz 1.5 Lt</div>
+          <div class="product-price">65,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-1">
+          <button class="add-btn" onclick="addToCart('icecekler-1', 'Daha Az Kalori Efsane Gazoz 1.5 Lt', 65.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-1" style="display:none;">
+            <button onclick="changeQty('icecekler-1', -1)">−</button>
+            <span id="qty-icecekler-1">1</span>
+            <button onclick="changeQty('icecekler-1', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-2.jpg" alt="Efsane Gazoz Şekersiz 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Efsane Gazoz Şekersiz 1 Lt</div>
+          <div class="product-price">60,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-2">
+          <button class="add-btn" onclick="addToCart('icecekler-2', 'Efsane Gazoz Şekersiz 1 Lt', 60.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-2" style="display:none;">
+            <button onclick="changeQty('icecekler-2', -1)">−</button>
+            <span id="qty-icecekler-2">1</span>
+            <button onclick="changeQty('icecekler-2', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-3.jpg" alt="Frutti Extra Yeşil Limonlu 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Frutti Extra Yeşil Limonlu 1 Lt</div>
+          <div class="product-price">63,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-3">
+          <button class="add-btn" onclick="addToCart('icecekler-3', 'Frutti Extra Yeşil Limonlu 1 Lt', 63.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-3" style="display:none;">
+            <button onclick="changeQty('icecekler-3', -1)">−</button>
+            <span id="qty-icecekler-3">1</span>
+            <button onclick="changeQty('icecekler-3', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-4.jpg" alt="Pepsi Kola 1.5 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Pepsi Kola 1.5 Lt</div>
+          <div class="product-price">56,92 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-4">
+          <button class="add-btn" onclick="addToCart('icecekler-4', 'Pepsi Kola 1.5 Lt', 56.92)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-4" style="display:none;">
+            <button onclick="changeQty('icecekler-4', -1)">−</button>
+            <span id="qty-icecekler-4">1</span>
+            <button onclick="changeQty('icecekler-4', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-5.jpg" alt="Coca-Cola Zero Sugar Pet 1.5 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Coca-Cola Zero Sugar Pet 1.5 Lt</div>
+          <div class="product-price">65,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-5">
+          <button class="add-btn" onclick="addToCart('icecekler-5', 'Coca-Cola Zero Sugar Pet 1.5 Lt', 65.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-5" style="display:none;">
+            <button onclick="changeQty('icecekler-5', -1)">−</button>
+            <span id="qty-icecekler-5">1</span>
+            <button onclick="changeQty('icecekler-5', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-6.jpg" alt="Pepsi Kola 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Pepsi Kola 1 Lt</div>
+          <div class="product-price">59,75 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-6">
+          <button class="add-btn" onclick="addToCart('icecekler-6', 'Pepsi Kola 1 Lt', 59.75)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-6" style="display:none;">
+            <button onclick="changeQty('icecekler-6', -1)">−</button>
+            <span id="qty-icecekler-6">1</span>
+            <button onclick="changeQty('icecekler-6', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-7.jpg" alt="Pepsi Zero Sugar 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Pepsi Zero Sugar 1 Lt</div>
+          <div class="product-price">65,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-7">
+          <button class="add-btn" onclick="addToCart('icecekler-7', 'Pepsi Zero Sugar 1 Lt', 65.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-7" style="display:none;">
+            <button onclick="changeQty('icecekler-7', -1)">−</button>
+            <span id="qty-icecekler-7">1</span>
+            <button onclick="changeQty('icecekler-7', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="icecekler-8.jpg" alt="Schweppes Tonik 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Schweppes Tonik 1 Lt</div>
+          <div class="product-price">92,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="icecekler-8">
+          <button class="add-btn" onclick="addToCart('icecekler-8', 'Schweppes Tonik 1 Lt', 92.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-icecekler-8" style="display:none;">
+            <button onclick="changeQty('icecekler-8', -1)">−</button>
+            <span id="qty-icecekler-8">1</span>
+            <button onclick="changeQty('icecekler-8', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="category-section" id="cat-meyve-sebze" style="display:none;">
+      <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-0.jpg" alt="Sarımsak 250 gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Sarımsak 250 gr</div>
+          <div class="product-price">65,44 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-0">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-0', 'Sarımsak 250 gr', 65.44)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-0" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-0', -1)">−</button>
+            <span id="qty-meyve-sebze-0">1</span>
+            <button onclick="changeQty('meyve-sebze-0', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-1.jpg" alt="Patates 1 kg" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Patates 1 kg</div>
+          <div class="product-price">42,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-1">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-1', 'Patates 1 kg', 42.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-1" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-1', -1)">−</button>
+            <span id="qty-meyve-sebze-1">1</span>
+            <button onclick="changeQty('meyve-sebze-1', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-2.jpg" alt="Salatalık 1 kg" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Salatalık 1 kg</div>
+          <div class="product-price">70,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-2">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-2', 'Salatalık 1 kg', 70.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-2" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-2', -1)">−</button>
+            <span id="qty-meyve-sebze-2">1</span>
+            <button onclick="changeQty('meyve-sebze-2', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-3.jpg" alt="Domates 500 gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Domates 500 gr</div>
+          <div class="product-price">29,75 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-3">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-3', 'Domates 500 gr', 29.75)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-3" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-3', -1)">−</button>
+            <span id="qty-meyve-sebze-3">1</span>
+            <button onclick="changeQty('meyve-sebze-3', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-4.jpg" alt="Soğan Kuru 500 gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Soğan Kuru 500 gr</div>
+          <div class="product-price">26,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-4">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-4', 'Soğan Kuru 500 gr', 26.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-4" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-4', -1)">−</button>
+            <span id="qty-meyve-sebze-4">1</span>
+            <button onclick="changeQty('meyve-sebze-4', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-5.jpg" alt="Limon 500 gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Limon 500 gr</div>
+          <div class="product-price">66,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-5">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-5', 'Limon 500 gr', 66.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-5" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-5', -1)">−</button>
+            <span id="qty-meyve-sebze-5">1</span>
+            <button onclick="changeQty('meyve-sebze-5', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-6.jpg" alt="Maydanoz Adet" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Maydanoz Adet</div>
+          <div class="product-price">27,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-6">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-6', 'Maydanoz Adet', 27.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-6" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-6', -1)">−</button>
+            <span id="qty-meyve-sebze-6">1</span>
+            <button onclick="changeQty('meyve-sebze-6', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="meyve-sebze-7.jpg" alt="Havuç 500 gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Havuç 500 gr</div>
+          <div class="product-price">35,13 ₺</div>
+        </div>
+        <div class="product-add" data-pid="meyve-sebze-7">
+          <button class="add-btn" onclick="addToCart('meyve-sebze-7', 'Havuç 500 gr', 35.13)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-meyve-sebze-7" style="display:none;">
+            <button onclick="changeQty('meyve-sebze-7', -1)">−</button>
+            <span id="qty-meyve-sebze-7">1</span>
+            <button onclick="changeQty('meyve-sebze-7', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="category-section" id="cat-sut-urunleri" style="display:none;">
+      <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-0.jpg" alt="İçim Süt %1.5 Yarım Yağlı 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">İçim Süt %1.5 Yarım Yağlı 1 Lt</div>
+          <div class="product-price">64,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-0">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-0', 'İçim Süt %1.5 Yarım Yağlı 1 Lt', 64.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-0" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-0', -1)">−</button>
+            <span id="qty-sut-urunleri-0">1</span>
+            <button onclick="changeQty('sut-urunleri-0', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-1.jpg" alt="Sütaş Laktozsuz Süt 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Sütaş Laktozsuz Süt 1 Lt</div>
+          <div class="product-price">65,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-1">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-1', 'Sütaş Laktozsuz Süt 1 Lt', 65.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-1" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-1', -1)">−</button>
+            <span id="qty-sut-urunleri-1">1</span>
+            <button onclick="changeQty('sut-urunleri-1', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-2.jpg" alt="Teksüt Yarım Yağlı Süt 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Teksüt Yarım Yağlı Süt 1 Lt</div>
+          <div class="product-price">56,75 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-2">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-2', 'Teksüt Yarım Yağlı Süt 1 Lt', 56.75)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-2" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-2', -1)">−</button>
+            <span id="qty-sut-urunleri-2">1</span>
+            <button onclick="changeQty('sut-urunleri-2', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-3.jpg" alt="Pınar Denge Laktozsuz Süt 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Pınar Denge Laktozsuz Süt 1 Lt</div>
+          <div class="product-price">87,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-3">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-3', 'Pınar Denge Laktozsuz Süt 1 Lt', 87.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-3" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-3', -1)">−</button>
+            <span id="qty-sut-urunleri-3">1</span>
+            <button onclick="changeQty('sut-urunleri-3', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-4.jpg" alt="Sütaş Süt %2.5 Yağlı 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Sütaş Süt %2.5 Yağlı 1 Lt</div>
+          <div class="product-price">70,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-4">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-4', 'Sütaş Süt %2.5 Yağlı 1 Lt', 70.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-4" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-4', -1)">−</button>
+            <span id="qty-sut-urunleri-4">1</span>
+            <button onclick="changeQty('sut-urunleri-4', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-5.jpg" alt="Pınar Süt Tam Yağlı 1 Lt" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Pınar Süt Tam Yağlı 1 Lt</div>
+          <div class="product-price">91,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-5">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-5', 'Pınar Süt Tam Yağlı 1 Lt', 91.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-5" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-5', -1)">−</button>
+            <span id="qty-sut-urunleri-5">1</span>
+            <button onclick="changeQty('sut-urunleri-5', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="sut-urunleri-6.jpg" alt="Pınar Protein Kakaolu Laktozsuz Süt 500 Ml" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Pınar Protein Kakaolu Laktozsuz Süt 500 Ml</div>
+          <div class="product-price">82,50 ₺</div>
+        </div>
+        <div class="product-add" data-pid="sut-urunleri-6">
+          <button class="add-btn" onclick="addToCart('sut-urunleri-6', 'Pınar Protein Kakaolu Laktozsuz Süt 500 Ml', 82.5)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-sut-urunleri-6" style="display:none;">
+            <button onclick="changeQty('sut-urunleri-6', -1)">−</button>
+            <span id="qty-sut-urunleri-6">1</span>
+            <button onclick="changeQty('sut-urunleri-6', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="category-section" id="cat-atistirmalik" style="display:none;">
+      <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-0.jpg" alt="Tadım Sultaniye Kuru Üzüm 140 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Tadım Sultaniye Kuru Üzüm 140 Gr</div>
+          <div class="product-price">53,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-0">
+          <button class="add-btn" onclick="addToCart('atistirmalik-0', 'Tadım Sultaniye Kuru Üzüm 140 Gr', 53.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-0" style="display:none;">
+            <button onclick="changeQty('atistirmalik-0', -1)">−</button>
+            <span id="qty-atistirmalik-0">1</span>
+            <button onclick="changeQty('atistirmalik-0', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-1.jpg" alt="Ülker Çubuk Kraker Tuzlu 40 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Ülker Çubuk Kraker Tuzlu 40 Gr</div>
+          <div class="product-price">8,75 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-1">
+          <button class="add-btn" onclick="addToCart('atistirmalik-1', 'Ülker Çubuk Kraker Tuzlu 40 Gr', 8.75)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-1" style="display:none;">
+            <button onclick="changeQty('atistirmalik-1', -1)">−</button>
+            <span id="qty-atistirmalik-1">1</span>
+            <button onclick="changeQty('atistirmalik-1', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-2.jpg" alt="Ülker Bol Sütlü Kare Çikolata 60 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Ülker Bol Sütlü Kare Çikolata 60 Gr</div>
+          <div class="product-price">77,75 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-2">
+          <button class="add-btn" onclick="addToCart('atistirmalik-2', 'Ülker Bol Sütlü Kare Çikolata 60 Gr', 77.75)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-2" style="display:none;">
+            <button onclick="changeQty('atistirmalik-2', -1)">−</button>
+            <span id="qty-atistirmalik-2">1</span>
+            <button onclick="changeQty('atistirmalik-2', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-3.jpg" alt="Ülker Laviva Dolgu ve Bisküvi Çikolata 35 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Ülker Laviva Dolgu ve Bisküvi Çikolata 35 Gr</div>
+          <div class="product-price">33,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-3">
+          <button class="add-btn" onclick="addToCart('atistirmalik-3', 'Ülker Laviva Dolgu ve Bisküvi Çikolata 35 Gr', 33.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-3" style="display:none;">
+            <button onclick="changeQty('atistirmalik-3', -1)">−</button>
+            <span id="qty-atistirmalik-3">1</span>
+            <button onclick="changeQty('atistirmalik-3', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-4.jpg" alt="Ülker Albeni 40 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Ülker Albeni 40 Gr</div>
+          <div class="product-price">23,00 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-4">
+          <button class="add-btn" onclick="addToCart('atistirmalik-4', 'Ülker Albeni 40 Gr', 23.0)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-4" style="display:none;">
+            <button onclick="changeQty('atistirmalik-4', -1)">−</button>
+            <span id="qty-atistirmalik-4">1</span>
+            <button onclick="changeQty('atistirmalik-4', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-5.jpg" alt="Ülker Napoliten Sütlü Çikolata 33 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Ülker Napoliten Sütlü Çikolata 33 Gr</div>
+          <div class="product-price">40,25 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-5">
+          <button class="add-btn" onclick="addToCart('atistirmalik-5', 'Ülker Napoliten Sütlü Çikolata 33 Gr', 40.25)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-5" style="display:none;">
+            <button onclick="changeQty('atistirmalik-5', -1)">−</button>
+            <span id="qty-atistirmalik-5">1</span>
+            <button onclick="changeQty('atistirmalik-5', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><img src="atistirmalik-6.jpg" alt="Tadelle Fındık Dolgulu Sütlü Çikolata 30 Gr" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="product-info">
+          <div class="product-name">Tadelle Fındık Dolgulu Sütlü Çikolata 30 Gr</div>
+          <div class="product-price">43,75 ₺</div>
+        </div>
+        <div class="product-add" data-pid="atistirmalik-6">
+          <button class="add-btn" onclick="addToCart('atistirmalik-6', 'Tadelle Fındık Dolgulu Sütlü Çikolata 30 Gr', 43.75)">Sepete Ekle</button>
+          <div class="qty-stepper" id="stepper-atistirmalik-6" style="display:none;">
+            <button onclick="changeQty('atistirmalik-6', -1)">−</button>
+            <span id="qty-atistirmalik-6">1</span>
+            <button onclick="changeQty('atistirmalik-6', 1)">+</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Uzay Market</h4>
+      <p style="color:#8FA3BD;">Taze ve güvenilir alışverişin adresi.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Hızlı Erişim</h4>
+      <a href="hakkimizda.html">Hakkımızda</a>
+      <a href="iletisim.html">İletişim</a>
+      <a href="adresimiz.html">Adresimiz</a>
+    </div>
+    <div class="footer-col">
+      <h4>İletişim</h4>
+      <a href="tel:+905398490035">📞 0539 849 00 35</a>
+      <a href="https://wa.me/905398490035" target="_blank">💬 WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">Copyright © 2026 Uzay Market. Tüm Hakları Saklıdır.</div>
+</footer>
+
+<div class="cart-bar" id="cartBar" onclick="openCart()">
+  <div class="cart-bar-left">
+    <div id="cartBarCount">0 ürün</div>
+    <div class="cart-bar-total" id="cartBarTotal">0,00 ₺</div>
+  </div>
+  <div class="cart-bar-right">Sepeti Gör</div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>Sepetim</h2>
+      <button class="cart-close" onclick="closeCart()">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItemsList">
+      <div class="cart-empty">Sepetiniz boş</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Toplam</span>
+        <span id="cartTotal">0,00 ₺</span>
+      </div>
+      <button class="location-btn" id="locationBtn" onclick="getLocation()">📍 Konumumu Ekle</button>
+      <div class="location-status" id="locationStatus"></div>
+      <button class="whatsapp-btn" id="whatsappBtn" onclick="sendWhatsappOrder()" disabled>
+        WhatsApp'tan Sipariş Ver
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var PHONE = "905398490035";
+  var cart = {};
+  var locationLink = null;
+
+  function addToCart(pid, name, price){
+    if(!cart[pid]){
+      cart[pid] = {name: name, price: price, qty: 1};
+    } else {
+      cart[pid].qty += 1;
+    }
+    document.getElementById('stepper-' + pid).style.display = 'flex';
+    document.querySelector('[data-pid="' + pid + '"] .add-btn').style.display = 'none';
+    document.getElementById('qty-' + pid).textContent = cart[pid].qty;
+    updateCartUI();
+  }
+
+  function changeQty(pid, delta){
+    if(!cart[pid]) return;
+    cart[pid].qty += delta;
+    if(cart[pid].qty <= 0){
+      delete cart[pid];
+      document.getElementById('stepper-' + pid).style.display = 'none';
+      document.querySelector('[data-pid="' + pid + '"] .add-btn').style.display = 'block';
+    } else {
+      document.getElementById('qty-' + pid).textContent = cart[pid].qty;
+    }
+    updateCartUI();
+  }
+
+  function getCartCount(){
+    var count = 0;
+    for(var pid in cart){ count += cart[pid].qty; }
+    return count;
+  }
+
+  function getCartTotal(){
+    var total = 0;
+    for(var pid in cart){ total += cart[pid].qty * cart[pid].price; }
+    return total;
+  }
+
+  function formatPrice(p){
+    return p.toFixed(2).replace('.', ',') + ' ₺';
+  }
+
+  function updateCartUI(){
+    var count = getCartCount();
+    var total = getCartTotal();
+
+    var badge = document.getElementById('cartBadge');
+    if(count > 0){
+      badge.style.display = 'flex';
+      badge.textContent = count;
+    } else {
+      badge.style.display = 'none';
+    }
+
+    var cartBar = document.getElementById('cartBar');
+    if(count > 0){
+      cartBar.classList.add('show');
+    } else {
+      cartBar.classList.remove('show');
+    }
+    document.getElementById('cartBarCount').textContent = count + ' ürün';
+    document.getElementById('cartBarTotal').textContent = formatPrice(total);
+    document.getElementById('cartTotal').textContent = formatPrice(total);
+
+    var whatsappBtn = document.getElementById('whatsappBtn');
+    whatsappBtn.disabled = count === 0;
+
+    var itemsList = document.getElementById('cartItemsList');
+    if(count === 0){
+      itemsList.innerHTML = '<div class="cart-empty">Sepetiniz boş</div>';
+      return;
+    }
+    var html = '';
+    for(var pid in cart){
+      var item = cart[pid];
+      html += '<div class="cart-item">' +
+        '<div><div class="cart-item-name">' + item.name + '</div>' +
+        '<div class="cart-item-price">' + formatPrice(item.price) + '</div></div>' +
+        '<div class="cart-item-controls">' +
+        '<button onclick="changeQty(\'' + pid + '\', -1)">−</button>' +
+        '<span>' + item.qty + '</span>' +
+        '<button onclick="changeQty(\'' + pid + '\', 1)">+</button>' +
+        '</div></div>';
+    }
+    itemsList.innerHTML = html;
+  }
+
+  function openCart(){
+    document.getElementById('cartOverlay').classList.add('open');
+  }
+  function closeCart(){
+    document.getElementById('cartOverlay').classList.remove('open');
+  }
+
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var mobileMenuClose = document.getElementById('mobileMenuClose');
+  hamburgerBtn.addEventListener('click', function(){ mobileMenu.classList.add('open'); });
+  mobileMenuClose.addEventListener('click', function(){ mobileMenu.classList.remove('open'); });
+
+  function switchCategory(cat){
+    document.querySelectorAll('.category-section').forEach(function(sec){
+      sec.style.display = 'none';
+    });
+    document.getElementById('cat-' + cat).style.display = 'grid';
+    document.querySelectorAll('.tab-btn').forEach(function(btn){
+      btn.classList.toggle('active', btn.dataset.cat === cat);
+    });
+    window.scrollTo({top: document.querySelector('.tabs-wrap').offsetTop - 70, behavior:'smooth'});
+  }
+
+  function getLocation(){
+    var statusEl = document.getElementById('locationStatus');
+    var btnEl = document.getElementById('locationBtn');
+    if(!navigator.geolocation){
+      statusEl.textContent = 'Tarayıcınız konum özelliğini desteklemiyor.';
+      return;
+    }
+    btnEl.textContent = '📍 Konum alınıyor...';
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var lat = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+      locationLink = 'https://maps.google.com/?q=' + lat + ',' + lng;
+      statusEl.textContent = '✓ Konumunuz eklendi';
+      btnEl.textContent = '📍 Konumu Güncelle';
+    }, function(err){
+      statusEl.textContent = 'Konum alınamadı, lütfen izin verin.';
+      btnEl.textContent = '📍 Konumumu Ekle';
+    });
+  }
+
+  function sendWhatsappOrder(){
+    var count = getCartCount();
+    if(count === 0) return;
+
+    var lines = ['Merhaba, sipariş vermek istiyorum:', ''];
+    for(var pid in cart){
+      var item = cart[pid];
+      lines.push(item.qty + 'x ' + item.name + ' - ' + formatPrice(item.qty * item.price));
+    }
+    lines.push('');
+    lines.push('Toplam: ' + formatPrice(getCartTotal()));
+    lines.push('');
+    if(locationLink){
+      lines.push('Teslimat Adresi (Harita): ' + locationLink);
+    } else {
+      lines.push('Adres: (Lütfen buraya adresinizi yazın)');
+    }
+
+    var text = encodeURIComponent(lines.join('\n'));
+    var url = 'https://wa.me/' + PHONE + '?text=' + text;
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
