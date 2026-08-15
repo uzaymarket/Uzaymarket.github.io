@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurye Paneli - Uzay Market</title>
+<style>
+  :root{
+    --space-deep:#0B2545;
+    --green:#2E8B57;
+    --green-dark:#1F6B42;
+    --green-light:#EAF6EF;
+    --cream:#FAF9F6;
+    --border:#E4E1D8;
+    --red:#C0392B;
+    --gray:#6b6b6b;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Poppins', sans-serif;
+    background:var(--cream);
+    color:#222;
+    padding:16px;
+    max-width:640px;
+    margin:0 auto;
+  }
+  h1{ font-size:1.3rem; color:var(--space-deep); margin-bottom:4px; }
+  .sub{ font-size:0.82rem; color:var(--gray); margin-bottom:20px; }
+  .gps-status{
+    padding:12px 14px;
+    border-radius:10px;
+    font-size:0.82rem;
+    font-weight:600;
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .gps-status.off{ background:#FBE9E7; color:var(--red); }
+  .gps-status.on{ background:var(--green-light); color:var(--green-dark); }
+  .order-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .order-time{ font-size:0.74rem; color:#999; margin-bottom:8px; }
+  .order-items{ font-size:0.87rem; line-height:1.6; margin-bottom:8px; }
+  .order-total{ font-weight:800; color:var(--green-dark); margin-bottom:10px; }
+  .order-location a{
+    display:inline-block;
+    font-size:0.8rem;
+    color:var(--space-deep);
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .status-badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:0.72rem;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .status-hazirlaniyor{ background:#FFF3DC; color:#8A5B00; }
+  .status-yolda{ background:#DCEEFB; color:#0B5C9E; }
+  .status-teslim{ background:var(--green-light); color:var(--green-dark); }
+  .btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-family:inherit;
+    font-weight:700;
+    font-size:0.85rem;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .btn-start{ background:var(--space-deep); color:#fff; }
+  .btn-done{ background:var(--green); color:#fff; }
+  .empty-msg{ text-align:center; color:#999; padding:40px 20px; font-size:0.9rem; }
+</style>
+</head>
+<body>
+
+<h1>🛵 Kurye Paneli</h1>
+<div class="sub">Bu sayfayı sipariş dağıtırken açık tutun.</div>
+<div class="gps-status off" id="gpsStatus">📍 GPS kapalı — bir siparişte "Yola Çıktım" deyince otomatik açılır</div>
+
+<div id="ordersList">
+  <div class="empty-msg" id="emptyMsg">Bekleyen sipariş yok.</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onChildAdded, onChildChanged, update, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCK_GKKyE3HpGtJggE-c6iNsVwhea-H7Jo",
+    authDomain: "uzay-market.firebaseapp.com",
+    databaseURL: "https://uzay-market-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "uzay-market",
+    storageBucket: "uzay-market.firebasestorage.app",
+    messagingSenderId: "849512127212",
+    appId: "1:849512127212:web:30ed9f1a64dc960ab6e3c9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  var watchId = null;
+  var activeOrderId = null;
+  var cardEls = {};
+  var wakeLock = null;
+
+  async function requestWakeLock(){
+    try{
+      if('wakeLock' in navigator){
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', function(){
+          wakeLock = null;
+        });
+      }
+    } catch(err){
+      console.log('Wake lock alınamadı:', err);
+    }
+  }
+
+  function releaseWakeLock(){
+    if(wakeLock){
+      wakeLock.release();
+      wakeLock = null;
+    }
+  }
+
+  // Ekranı kapatıp geri açarsan (kısa süreliğine), wake lock'u otomatik yeniden iste
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible' && activeOrderId && !wakeLock){
+      requestWakeLock();
+    }
+  });
+
+  function formatPrice(n){
+    return n.toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ₺';
+  }
+
+  function statusLabel(status){
+    if(status === 'yolda') return '<span class="status-badge status-yolda">🛵 Yolda</span>';
+    if(status === 'teslim') return '<span class="status-badge status-teslim">✅ Teslim Edildi</span>';
+    return '<span class="status-badge status-hazirlaniyor">⏳ Hazırlanıyor</span>';
+  }
+
+  function renderButtons(orderId, status){
+    if(status === 'teslim'){
+      return '';
+    } else if(status === 'yolda'){
+      return '<button class="btn btn-done" data-action="teslim" data-id="' + orderId + '">✅ Teslim Edildi</button>';
+    } else {
+      return '<button class="btn btn-start" data-action="yolda" data-id="' + orderId + '">🛵 Yola Çıktım</button>';
+    }
+  }
+
+  function buildCard(orderId, order){
+    var card = document.createElement('div');
+    card.className = 'order-card';
+    card.id = 'order-' + orderId;
+
+    var itemsHtml = '';
+    if(order.items){
+      order.items.forEach(function(it){
+        itemsHtml += it.qty + 'x ' + it.name + '<br>';
+      });
+    }
+    var timeStr = order.createdAt ? new Date(order.createdAt).toLocaleString('tr-TR') : '';
+    var status = order.status || 'hazirlaniyor';
+
+    card.innerHTML =
+      '<div class="order-time">' + timeStr + '</div>' +
+      statusLabel(status) +
+      '<div class="order-items">' + itemsHtml + '</div>' +
+      '<div class="order-total">Toplam: ' + formatPrice(order.total || 0) + '</div>' +
+      (order.locationLink ? '<div class="order-location"><a href="' + order.locationLink + '" target="_blank">📍 Teslimat Konumu</a></div>' : '') +
+      '<div class="btn-row">' + renderButtons(orderId, status) + '</div>';
+
+    return card;
+  }
+
+  function attachButtonHandlers(card, orderId){
+    var btn = card.querySelector('button[data-action]');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var action = btn.getAttribute('data-action');
+      if(action === 'yolda'){
+        startDelivery(orderId);
+      } else if(action === 'teslim'){
+        finishDelivery(orderId);
+      }
+    });
+  }
+
+  function startDelivery(orderId){
+    activeOrderId = orderId;
+    update(ref(db, 'orders/' + orderId), { status: 'yolda' });
+    requestWakeLock();
+
+    if(!navigator.geolocation){
+      alert('Bu cihaz konum paylaşımını desteklemiyor.');
+      return;
+    }
+    if(watchId) navigator.geolocation.clearWatch(watchId);
+
+    watchId = navigator.geolocation.watchPosition(function(pos){
+      document.getElementById('gpsStatus').className = 'gps-status on';
+      document.getElementById('gpsStatus').textContent = '📍 GPS Açık · 🔆 Ekran uyanık tutuluyor';
+      update(ref(db, 'orders/' + activeOrderId), {
+        courierLocation: {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          updatedAt: Date.now()
+        }
+      });
+    }, function(err){
+      document.getElementById('gpsStatus').className = 'gps-status off';
+      document.getElementById('gpsStatus').textContent = '⚠️ Konum alınamadı, izin verdiğinizden emin olun.';
+    }, { enableHighAccuracy:true, maximumAge:5000, timeout:15000 });
+  }
+
+  function finishDelivery(orderId){
+    update(ref(db, 'orders/' + orderId), { status: 'teslim' });
+    if(orderId === activeOrderId){
+      if(watchId) navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+      activeOrderId = null;
+      releaseWakeLock();
+      document.getElementById('gpsStatus').className = 'gps-status off';
+      document.getElementById('gpsStatus').textContent = '📍 GPS kapalı — bir siparişte "Yola Çıktım" deyince otomatik açılır';
+    }
+  }
+
+  var ordersRef = query(ref(db, 'orders'), limitToLast(30));
+
+  onChildAdded(ordersRef, function(snapshot){
+    var order = snapshot.val();
+    var orderId = snapshot.key;
+    if(order.status === 'teslim') return; // teslim edilmişleri listeleme
+
+    var emptyMsg = document.getElementById('emptyMsg');
+    if(emptyMsg) emptyMsg.remove();
+
+    var card = buildCard(orderId, order);
+    cardEls[orderId] = order;
+    document.getElementById('ordersList').prepend(card);
+    attachButtonHandlers(card, orderId);
+  });
+
+  onChildChanged(ordersRef, function(snapshot){
+    var order = snapshot.val();
+    var orderId = snapshot.key;
+    var existing = document.getElementById('order-' + orderId);
+
+    if(order.status === 'teslim'){
+      if(existing) existing.remove();
+      if(document.getElementById('ordersList').children.length === 0){
+        document.getElementById('ordersList').innerHTML = '<div class="empty-msg">Bekleyen sipariş yok.</div>';
+      }
+      return;
+    }
+
+    if(existing){
+      var newCard = buildCard(orderId, order);
+      existing.replaceWith(newCard);
+      attachButtonHandlers(newCard, orderId);
+    }
+  });
+</script>
+
+</body>
+</html>
