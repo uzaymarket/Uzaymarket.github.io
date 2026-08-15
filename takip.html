@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sipariş Takibi - Uzay Market</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  :root{
+    --space-deep:#0B2545;
+    --green:#2E8B57;
+    --green-dark:#1F6B42;
+    --green-light:#EAF6EF;
+    --cream:#FAF9F6;
+    --border:#E4E1D8;
+    --gold:#E0A458;
+    --gray:#6b6b6b;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Poppins', sans-serif;
+    background:var(--cream);
+    color:#222;
+  }
+  header{
+    background:var(--space-deep);
+    color:#fff;
+    padding:16px 18px;
+    text-align:center;
+  }
+  header h1{ font-size:1.15rem; }
+  header .accent{ color:var(--gold); }
+  .status-bar{
+    padding:14px 18px;
+    text-align:center;
+    font-weight:700;
+    font-size:0.92rem;
+  }
+  .status-hazirlaniyor{ background:#FFF3DC; color:#8A5B00; }
+  .status-yolda{ background:var(--green-light); color:var(--green-dark); }
+  .status-teslim{ background:var(--green); color:#fff; }
+  #map{
+    width:100%;
+    height:60vh;
+    background:#eee;
+  }
+  .info-box{
+    padding:18px;
+    max-width:640px;
+    margin:0 auto;
+  }
+  .info-box p{ font-size:0.85rem; color:var(--gray); line-height:1.6; text-align:center; }
+  .not-found{ text-align:center; padding:60px 20px; color:var(--gray); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚀 Uzay <span class="accent">Market</span> — Sipariş Takibi</h1>
+</header>
+
+<div id="statusBar" class="status-bar status-hazirlaniyor">⏳ Siparişiniz hazırlanıyor...</div>
+<div id="map"></div>
+<div class="info-box">
+  <p id="infoText">Kurye yola çıktığında burada canlı konumunu görebileceksiniz. Sayfayı açık tutmanıza gerek yok, istediğiniz zaman tekrar bu linke girebilirsiniz.</p>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCK_GKKyE3HpGtJggE-c6iNsVwhea-H7Jo",
+    authDomain: "uzay-market.firebaseapp.com",
+    databaseURL: "https://uzay-market-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "uzay-market",
+    storageBucket: "uzay-market.firebasestorage.app",
+    messagingSenderId: "849512127212",
+    appId: "1:849512127212:web:30ed9f1a64dc960ab6e3c9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  var params = new URLSearchParams(window.location.search);
+  var orderId = params.get('id');
+
+  if(!orderId){
+    document.body.innerHTML = '<div class="not-found">Geçersiz takip linki.</div>';
+  } else {
+    var map = L.map('map').setView([41.015, 28.979], 13); // varsayılan: İstanbul, konum gelince güncellenir
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap katkıda bulunanlar'
+    }).addTo(map);
+
+    var courierIcon = L.divIcon({
+      html: '🛵',
+      className: 'courier-emoji-icon',
+      iconSize: [32,32]
+    });
+    var courierMarker = null;
+    var mapCentered = false;
+
+    onValue(ref(db, 'orders/' + orderId), function(snapshot){
+      var order = snapshot.val();
+      if(!order){
+        document.body.innerHTML = '<div class="not-found">Sipariş bulunamadı. Link hatalı olabilir.</div>';
+        return;
+      }
+
+      var statusBar = document.getElementById('statusBar');
+      var infoText = document.getElementById('infoText');
+
+      if(order.status === 'teslim'){
+        statusBar.className = 'status-bar status-teslim';
+        statusBar.textContent = '✅ Siparişiniz teslim edildi. Afiyet olsun!';
+        infoText.textContent = 'Bizi tercih ettiğiniz için teşekkürler.';
+      } else if(order.status === 'yolda'){
+        statusBar.className = 'status-bar status-yolda';
+        statusBar.textContent = '🛵 Kurye yolda!';
+        infoText.textContent = 'Kurye konumu birkaç saniyede bir güncelleniyor.';
+      } else {
+        statusBar.className = 'status-bar status-hazirlaniyor';
+        statusBar.textContent = '⏳ Siparişiniz hazırlanıyor...';
+        infoText.textContent = 'Kurye yola çıktığında burada canlı konumunu görebileceksiniz.';
+      }
+
+      if(order.courierLocation && order.status === 'yolda'){
+        var lat = order.courierLocation.lat;
+        var lng = order.courierLocation.lng;
+        if(!courierMarker){
+          courierMarker = L.marker([lat, lng], {icon: courierIcon}).addTo(map);
+        } else {
+          courierMarker.setLatLng([lat, lng]);
+        }
+        if(!mapCentered){
+          map.setView([lat, lng], 15);
+          mapCentered = true;
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .courier-emoji-icon{ font-size:28px; text-align:center; line-height:32px; }
+</style>
+
+</body>
+</html>
